@@ -95,9 +95,9 @@ BOOK* readBooks(){
                 fscanf(fp,"%d",&book->id);
                 if(book->id == 0)
                         break;
-                        
+
                  while(fgetc(fp) == ' ');
-                fseek(fp,-1,SEEK_CUR); 
+                 fseek(fp,-1,SEEK_CUR); 
 
                 fscanf(fp,"%22[^\n]s",book->name);
                 fscanf(fp,"%d",&book->status);
