@@ -95,7 +95,10 @@ BOOK* readBooks(){
                 fscanf(fp,"%d",&book->id);
                 if(book->id == 0)
                         break;
-                fseek(fp,1,SEEK_CUR); // skips the space between id and name
+                        
+                 while(fgetc(fp) == ' ');
+                fseek(fp,-1,SEEK_CUR); 
+
                 fscanf(fp,"%22[^\n]s",book->name);
                 fscanf(fp,"%d",&book->status);
                 book->next = NULL;
