@@ -38,6 +38,10 @@ int countSize(FILE* fp){
         return count;
 }
 void printBookList(BOOK* list){
+        if(list == NULL){
+                printf("Book list empty!!!\n");
+                return;
+        }
         printf("BOOK LIST:\n");
         while(list->next != NULL){
                 printf("%-3d %-50s %d\n",list->id,list->name,list->status);
@@ -69,6 +73,10 @@ void createBook(BOOK** list){
         printf("\nenter id: ");
         scanf("%d",&newbook->id);
         //validate book id
+        if(newbook->id == 0){
+                printf("id cannot be 0!!\n");
+                return;
+        }
         while(temp != NULL){
                 if(temp->id == newbook->id){
                         printf("id already taken by: %s\n",temp->name);
@@ -176,10 +184,10 @@ BOOK* readBooks(){
 int main(void) {
   BOOK* list;
   list = readBooks();
-  printBookList(list);
+  printBookList(NULL);
   createBook(&list);
-  printBookList(list);
-  deleteBook(&list,11);
+  //printBookList(list);
+  //deleteBook(&list,22);
   printBookList(list);
   return 0;
 }
