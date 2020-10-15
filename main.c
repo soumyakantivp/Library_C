@@ -52,17 +52,28 @@ void updateBookList(BOOK* list){
         }
 }
 void createBook(BOOK** list){
+        BOOK* temp = *list;
         BOOK* newbook = (BOOK*)malloc(sizeof(BOOK));
-        printf("enter book name and id: ");
+        printf("enter book name: ");
         scanf("%[^\n]s",newbook->name);
+        printf("\nenter id: ");
         scanf("%d",&newbook->id);
+        //validate book id
+        while(temp != NULL){
+                if(temp->id == newbook->id){
+                        printf("id already taken by: %s\n",temp->name);
+                        return;
+                }
+                temp = temp->next;
+        }
+        
         newbook->status = 1;//available
         newbook->next = NULL;
         if(*list == NULL){
                 *list = newbook;
         }
         else{
-                BOOK* temp = *list;
+                temp = *list;
                 while(temp->next!=NULL){
                         temp = temp->next;
                 }
