@@ -4,3 +4,5 @@
 4   bunga bunga                                        1
 5   gu gu gu                                           1
 7   hero                                               1
+6   trojan war                                         1
+11  fff                                                1
