@@ -13,3 +13,5 @@ typedef struct student{
         int status[MAX];//array of book ids issued
         struct student* next;
 }STUDENT;
+
+//remove left trailing spaces from book name
