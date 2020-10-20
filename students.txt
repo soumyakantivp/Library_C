@@ -1,2 +1,2 @@
-1  toto       1 2
+1  toto       1 2 0
 2  apurba     0
