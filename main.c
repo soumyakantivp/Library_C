@@ -13,7 +13,7 @@ typedef struct book{
 typedef struct student{
         char name[50];
         int roll;
-        char status[MAX];//array of book ids issued
+        int status[MAX];//array of book ids issued
         struct student* next;
 }STUDENT;
 
@@ -246,6 +246,26 @@ int findBook(BOOK* list,int id){
          printf("\n");
          */
  }
+ void createStudent(STUDENT** slist){
+         STUDENT* newstudent = (STUDENT*)malloc(sizeof(STUDENT));
+         printf("enter name: ");
+         scanf("%[^\n]s",newstudent->name);
+         printf("\nenter roll: ");
+         scanf("%d",&newstudent->roll);
+         newstudent->status[0] = 0;
+         newstudent->next = NULL;
+         printf("\nnew student created!");
+
+         STUDENT* temp = *slist;
+         if(temp == NULL){
+                 *slist = newstudent;
+         }
+         while(temp->next != NULL){
+                 temp = temp->next;
+         }
+         temp->next = newstudent;
+
+ }
  void printStatus(int status[]){
 
          for(int i=0;i<MAX;i++){
@@ -278,16 +298,18 @@ STUDENT* readStudents(){
         fseek(fp,0,SEEK_SET);
         while(!feof(fp)){ 
                 STUDENT* student = (STUDENT*)malloc(sizeof(STUDENT));
-                fscanf(fp,"%d",&student->roll);
+                fscanf(fp,"%3d",&student->roll);
                 if(student->roll == 0)
                         break;
+                
                 fscanf(fp,"%13[^\n]s",student->name);
                  /*       
                  while(fgetc(fp) == ' ');
                 fseek(fp,-1,SEEK_CUR); 
                 */
-                 fscanf(fp,"%10[^\n]s",student->status);
-                
+                char statusString[MAX];
+                fscanf(fp,"%10[^\n]s",statusString);
+                statusToInt(statusString,student->status);//stores status of a student as integer array
                 
                 student->next = NULL;
                 addStudent(&slist,student);
@@ -312,9 +334,9 @@ void printStudentList(STUDENT* list){
                 printf("roll:%-3d name:%-50s status:",list->roll,list->name);
                 //int size = strlen(list->status);
                 //printf("%s",list->status);
-                int stat[MAX];
-                statusToInt(list->status,stat);
-                printStatus(stat);
+                //int stat[MAX];
+               // statusToInt(list->status,stat);
+                printStatus(list->status);
                 printf("\n");
                 list = list->next;
         }
@@ -330,6 +352,8 @@ int main(void) {
   //deleteBook(&blist,22);
   //printBookList(blist);
   //printf("%d\n",isAvailable(blist,22));
+  
   slist = readStudents();
+  createStudent(&slist);
   printStudentList(slist);
   return 0;}

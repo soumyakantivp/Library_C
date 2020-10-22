@@ -10,9 +10,10 @@ typedef struct book{
 typedef struct student{
         char name[50];
         int roll;
-        char status[MAX];//array of book ids issued[must end with 0]
+        int status[MAX];//array of book ids issued[must end with 0]
         struct student* next;
 }STUDENT;
 
 //remove left trailing spaces from book name
-//change student status from char to int!!
+//change student status from char to int!! ................done!
+//createSTUDENT...done  & update Student File!
