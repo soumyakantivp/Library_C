@@ -215,6 +215,7 @@ int findBook(BOOK* list,int id){
  void printStatus(int status[]);//prints status array until 0 found!
  void addStudent(STUDENT** list,STUDENT* newstudent);//generates student list at runtime
  STUDENT* readStudents(); // reads data from file and calls addStudent()
+ void updateStudentFile(STUDENT * list);//copies data in studentlist to student file
  void printStudentList(STUDENT* list);// prints student list
 
  
@@ -254,7 +255,7 @@ int findBook(BOOK* list,int id){
          scanf("%d",&newstudent->roll);
          newstudent->status[0] = 0;
          newstudent->next = NULL;
-         printf("\nnew student created!");
+         printf("\nnew student created!\n");
 
          STUDENT* temp = *slist;
          if(temp == NULL){
@@ -302,13 +303,14 @@ STUDENT* readStudents(){
                 if(student->roll == 0)
                         break;
                 
-                fscanf(fp,"%13[^\n]s",student->name);
-                 /*       
-                 while(fgetc(fp) == ' ');
-                fseek(fp,-1,SEEK_CUR); 
-                */
+                while(fgetc(fp) == ' ');
+                fgetc(fp);
+                fseek(fp,-2,SEEK_CUR);
+
+                fscanf(fp,"%50[^\n]s",student->name);
+                        
                 char statusString[MAX];
-                fscanf(fp,"%10[^\n]s",statusString);
+                fscanf(fp,"%20[^\n]s",statusString);
                 statusToInt(statusString,student->status);//stores status of a student as integer array
                 
                 student->next = NULL;
@@ -321,6 +323,26 @@ STUDENT* readStudents(){
         else{
                 printf("cant open file!");
                 return NULL;
+        }
+}
+void updateStudentFile(STUDENT* list){
+        FILE* fp;
+        if((fp = fopen("students.txt","w"))){
+                while(list != NULL){
+                        fprintf(fp,"%-3d %-50s ",list->roll,list->name);
+                        for(int i=0;i<MAX;i++){
+                                fprintf(fp,"%d ",list->status[i]);
+                                if(list->status[i] == 0)
+                                break;
+                        }
+                        fprintf(fp,"\n");
+                        list = list->next;
+                }
+        
+        }
+        else{
+                printf("cant open file!");
+                return;
         }
 }
 void printStudentList(STUDENT* list){
@@ -354,6 +376,8 @@ int main(void) {
   //printf("%d\n",isAvailable(blist,22));
   
   slist = readStudents();
+  printStudentList(slist);
   createStudent(&slist);
   printStudentList(slist);
+  updateStudentFile(slist);
   return 0;}

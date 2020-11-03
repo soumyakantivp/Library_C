@@ -1,2 +1,5 @@
-1  toto       1 2 0
-2  apurba     0
+1   toto                                               0 
+2   shuvo                                              1 2 0 
+3   ahana                                              1 2 3 4 0 
+4   raghu                                              0 
+5   chanchhu                                           0 
