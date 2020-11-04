@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define MAX 10 // total number of books each student can issue
+#define MAX 20 // total number of books each student can issue
 
 typedef struct book{
         char name[100];
@@ -212,12 +212,13 @@ int findBook(BOOK* list,int id){
 //student functions
  void initializeStudent(STUDENT** s);
  void statusToInt(char status[],int stat[]);//converts status string to int array of size MAX
+ void createStudent(STUDENT** slist);// creates new student node with user input in student list....needs to be updated to reflect in student file
  void printStatus(int status[]);//prints status array until 0 found!
  void addStudent(STUDENT** list,STUDENT* newstudent);//generates student list at runtime
  STUDENT* readStudents(); // reads data from file and calls addStudent()
  void updateStudentFile(STUDENT * list);//copies data in studentlist to student file
  void printStudentList(STUDENT* list);// prints student list
-
+ void deleteStudent(STUDENT** list,int roll);//seletes student with specific roll
  
 /*********************STUDENT functions***********************/
  void initializeStudent(STUDENT** s){
@@ -232,8 +233,10 @@ int findBook(BOOK* list,int id){
                          //printf("%c %d\n",status[i],j);
                          stat[j] = status[i] - 48;
                          j++;
-                         if(j == MAX)
+                         if(j == MAX){
+                                printf("status array full! -> maximum book borrow limit reached!\n");
                                 break;
+                         }
                  }
                  //if(status[j] == '\0')
                         //break;
@@ -364,6 +367,36 @@ void printStudentList(STUDENT* list){
         }
         
 }
+void deleteStudent(STUDENT** list,int roll){
+        if((*list)->roll == roll){
+                STUDENT *temp = *list;//to be deleted
+                *list = (*list)->next;
+                free(temp);
+                temp = NULL;
+                return;
+        }
+        else{
+                STUDENT* itr = (*list);
+                while(itr->next->next != NULL){
+                        if(itr->next->roll == roll){
+                                STUDENT *temp = itr->next;//to be deleted
+                                itr->next = (itr->next)->next;
+                                free(temp);
+                                temp = NULL;
+                                return;
+                        }
+                        itr = itr->next;
+                }
+                if(itr->next->roll == roll){
+                        STUDENT *temp = itr->next;//to be deleted
+                        itr->next = itr->next->next;
+                        free(temp);
+                        temp = NULL;
+                        return;
+                }
+        }
+        printf("student with roll: %d not found!\n",roll);
+}
 int main(void) {
   //BOOK* blist;
   //blist = readBooks();
@@ -377,7 +410,7 @@ int main(void) {
   
   slist = readStudents();
   printStudentList(slist);
-  createStudent(&slist);
+  deleteStudent(&slist,5);
   printStudentList(slist);
-  updateStudentFile(slist);
+  //updateStudentFile(slist);
   return 0;}
